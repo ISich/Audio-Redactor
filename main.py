@@ -2,59 +2,79 @@ import tkinter as tk
 from sound import *
 from pygame import mixer
 
-global vol_arg
-global speed_arg
-global begin
-global end
 global paused
-global incount
-global outcount
-global times
 paused = False
+
+
+def update():
+    var.set(song.history_stack)
+
+
+def get_reverse():
+    song.reverse_sound()
+    update()
+
+
+def get_undo():
+    song.undo()
+    update()
+
+
+def get_redo():
+    song.redo()
+    update()
+
+
+def get_overlay():
+    song.overlay()
+    update()
+
+
+def get_merge():
+    song.merge()
+    update()
 
 
 def get_repeat():
     value = repeat_entry.get()
     times = int(value)
     song.repeat_sound(times)
+    update()
 
 
 def get_fade_out():
-    global outcount
-    value = fade_out_entry.get()
-    outcount = int(value) * 1000
-    song.fade_out(outcount)
+    value = float(fade_out_entry.get())
+    song.fade_out(value)
+    update()
 
 
 def get_fade_in():
-    global incount
-    value = fade_in_entry.get()
-    incount = int(value) * 1000
-    song.fade_in(incount)
+    value = float(fade_in_entry.get())
+    song.fade_in(value)
+    update()
 
 
 def get_slice():
-    global begin
-    global end
     value1 = first_slice_entry.get()
-    begin = int(value1)
+    begin = float(value1)
     value2 = second_slice_entry.get()
-    end = int(value2)
+    end = float(value2)
     song.slice(begin, end)
+    update()
 
 
 def get_volume():
-    global vol_arg
     value = volume_entry.get()
     vol_arg = float(value)
     song.volume_change(vol_arg)
+    update()
 
 
 def get_speed():
-    global speed_arg
     value = speed_entry.get()
     speed_arg = float(value)
     song.speed_change(speed_arg)
+    update()
 
 
 def open_sound():
@@ -126,17 +146,17 @@ if __name__ == "__main__":
     pause_btn = tk.Button(root, image=pause_img, borderwidth=0, command=lambda: pause(paused), state='disabled')
     stop_btn = tk.Button(root, image=stop_img, borderwidth=0, command=lambda: stop(), state='disabled')
 
-    play_btn.place(x=400, y=200)
-    pause_btn.place(x=460, y=200)
-    stop_btn.place(x=520, y=200)
+    play_btn.place(x=400, y=300)
+    pause_btn.place(x=460, y=300)
+    stop_btn.place(x=520, y=300)
 
     open_btn = tk.Button(root, borderwidth=0, text='Open', command=lambda: open_sound(), width=4)
     open_btn.place(x=40, y=40)
 
-    undo_btn = tk.Button(root, borderwidth=0, text='Undo', command=lambda: song.undo(), width=4, state='disabled')
+    undo_btn = tk.Button(root, borderwidth=0, text='Undo', command=lambda: get_undo(), width=4, state='disabled')
     undo_btn.place(x=40, y=70)
 
-    redo_btn = tk.Button(root, borderwidth=0, text='Redo', command=lambda: song.redo(), width=4, state='disabled')
+    redo_btn = tk.Button(root, borderwidth=0, text='Redo', command=lambda: get_redo(), width=4, state='disabled')
     redo_btn.place(x=40, y=100)
 
     speed_btn = tk.Button(root, borderwidth=0, text='Change\nspeed', command=lambda: get_speed(), width=4,
@@ -145,16 +165,15 @@ if __name__ == "__main__":
 
     speed_entry = tk.Entry(root, width=6, state='disabled')
     speed_entry.place(x=40, y=176)
-
-    reverse_btn = tk.Button(root, borderwidth=0, text='Reverse', command=lambda: song.reverse_sound(), width=4,
+    reverse_btn = tk.Button(root, borderwidth=0, text='Reverse', command=lambda: get_reverse(), width=4,
                             state='disabled')
     reverse_btn.place(x=40, y=210)
 
-    overlay_btn = tk.Button(root, borderwidth=0, text='Overlay', command=lambda: song.overlay(), width=4,
+    overlay_btn = tk.Button(root, borderwidth=0, text='Overlay', command=lambda: get_overlay(), width=4,
                             state='disabled')
     overlay_btn.place(x=40, y=240)
 
-    merge_btn = tk.Button(root, borderwidth=0, text='Merge', command=lambda: song.merge(), width=4, state='disabled')
+    merge_btn = tk.Button(root, borderwidth=0, text='Merge', command=lambda: get_merge(), width=4, state='disabled')
     merge_btn.place(x=40, y=270)
 
     volume_btn = tk.Button(root, borderwidth=0, text='Change\nvolume', command=lambda: get_volume(), width=4,
@@ -195,5 +214,12 @@ if __name__ == "__main__":
 
     save_btn = tk.Button(root, borderwidth=0, text='Save', command=lambda: song.save(), width=4, state='disabled')
     save_btn.place(x=120, y=280)
+
+    var = tk.StringVar(value=song.history_stack)
+    listbox = tk.Listbox(listvariable=var, width=30)
+    listbox.place(x=350, y=100)
+
+    scrollbar = tk.Scrollbar(orient="vertical", command=listbox.yview)
+    scrollbar.place(x=605, y=105)
 
     root.mainloop()
