@@ -14,7 +14,6 @@ paused = False
 
 
 def get_repeat():
-    global times
     value = repeat_entry.get()
     times = int(value)
     song.repeat_sound(times)
@@ -86,7 +85,6 @@ def open_sound():
     repeat_btn['state'] = 'normal'
     repeat_entry['state'] = 'normal'
     save_btn['state'] = 'normal'
-    #time_label.config(text=f'Song duration: {song.get_duration()}')
 
 
 def play():
@@ -110,88 +108,92 @@ def pause(is_paused):
         paused = True
 
 
-root = tk.Tk()
-mixer.init()
-root.title('Audio Editor')
-root.geometry('700x400')
-root.resizable(False, False)
-root.config(bg='grey')
+if __name__ == "__main__":
+    root = tk.Tk()
+    mixer.init()
+    root.title('Audio Editor')
+    root.geometry('700x400')
+    root.resizable(False, False)
+    root.config(bg='grey')
 
-song = Sound()
+    song = Sound()
 
-play_img = tk.PhotoImage(file='1.png')
-pause_img = tk.PhotoImage(file='2.png')
-stop_img = tk.PhotoImage(file='3.png')
+    play_img = tk.PhotoImage(file='1.png')
+    pause_img = tk.PhotoImage(file='2.png')
+    stop_img = tk.PhotoImage(file='3.png')
 
-play_btn = tk.Button(root, image=play_img, borderwidth=0, command=lambda: play(), state='disabled')
-pause_btn = tk.Button(root, image=pause_img, borderwidth=0, command=lambda: pause(paused), state='disabled')
-stop_btn = tk.Button(root, image=stop_img, borderwidth=0, command=lambda: stop(), state='disabled')
+    play_btn = tk.Button(root, image=play_img, borderwidth=0, command=lambda: play(), state='disabled')
+    pause_btn = tk.Button(root, image=pause_img, borderwidth=0, command=lambda: pause(paused), state='disabled')
+    stop_btn = tk.Button(root, image=stop_img, borderwidth=0, command=lambda: stop(), state='disabled')
 
-play_btn.place(x=400,y=200)
-pause_btn.place(x=460,y=200)
-stop_btn.place(x=520,y=200)
+    play_btn.place(x=400, y=200)
+    pause_btn.place(x=460, y=200)
+    stop_btn.place(x=520, y=200)
 
-open_btn = tk.Button(root, borderwidth=0, text='Open', command=lambda: open_sound(), width=4)
-open_btn.place(x=40,y=40)
+    open_btn = tk.Button(root, borderwidth=0, text='Open', command=lambda: open_sound(), width=4)
+    open_btn.place(x=40, y=40)
 
-undo_btn = tk.Button(root, borderwidth=0, text='Undo', command=lambda: song.undo(), width=4, state='disabled')
-undo_btn.place(x=40,y=70)
+    undo_btn = tk.Button(root, borderwidth=0, text='Undo', command=lambda: song.undo(), width=4, state='disabled')
+    undo_btn.place(x=40, y=70)
 
-redo_btn = tk.Button(root, borderwidth=0, text='Redo', command=lambda: song.redo(), width=4, state='disabled')
-redo_btn.place(x=40,y=100)
+    redo_btn = tk.Button(root, borderwidth=0, text='Redo', command=lambda: song.redo(), width=4, state='disabled')
+    redo_btn.place(x=40, y=100)
 
-speed_btn = tk.Button(root, borderwidth=0, text='Change\nspeed', command=lambda: get_speed(), width=4, state='disabled')
-speed_btn.place(x=40,y=130)
+    speed_btn = tk.Button(root, borderwidth=0, text='Change\nspeed', command=lambda: get_speed(), width=4,
+                          state='disabled')
+    speed_btn.place(x=40, y=130)
 
-speed_entry = tk.Entry(root, width=6, state='disabled')
-speed_entry.place(x=40,y=176)
+    speed_entry = tk.Entry(root, width=6, state='disabled')
+    speed_entry.place(x=40, y=176)
 
-reverse_btn = tk.Button(root, borderwidth=0, text='Reverse', command=lambda: song.reverse_sound(), width=4,
-                        state='disabled')
-reverse_btn.place(x=40,y=210)
+    reverse_btn = tk.Button(root, borderwidth=0, text='Reverse', command=lambda: song.reverse_sound(), width=4,
+                            state='disabled')
+    reverse_btn.place(x=40, y=210)
 
-overlay_btn = tk.Button(root, borderwidth=0, text='Overlay', command=lambda: song.overlay(), width=4, state='disabled')
-overlay_btn.place(x=40,y=240)
+    overlay_btn = tk.Button(root, borderwidth=0, text='Overlay', command=lambda: song.overlay(), width=4,
+                            state='disabled')
+    overlay_btn.place(x=40, y=240)
 
-merge_btn = tk.Button(root, borderwidth=0, text='Merge', command=lambda: song.merge(), width=4, state='disabled')
-merge_btn.place(x=40,y=270)
+    merge_btn = tk.Button(root, borderwidth=0, text='Merge', command=lambda: song.merge(), width=4, state='disabled')
+    merge_btn.place(x=40, y=270)
 
-volume_btn = tk.Button(root, borderwidth=0, text='Change\nvolume', command=lambda: get_volume(), width=4, state='disabled')
-volume_btn.place(x=40, y=300)
+    volume_btn = tk.Button(root, borderwidth=0, text='Change\nvolume', command=lambda: get_volume(), width=4,
+                           state='disabled')
+    volume_btn.place(x=40, y=300)
 
-volume_entry = tk.Entry(root, width=6, state='disabled')
-volume_entry.place(x=40, y=346)
+    volume_entry = tk.Entry(root, width=6, state='disabled')
+    volume_entry.place(x=40, y=346)
 
-slice_btn = tk.Button(root, borderwidth=0, text='Slice', command=lambda: get_slice(), width=4, state='disabled')
-slice_btn.place(x=120, y=40)
+    slice_btn = tk.Button(root, borderwidth=0, text='Slice', command=lambda: get_slice(), width=4, state='disabled')
+    slice_btn.place(x=120, y=40)
 
-first_slice_entry = tk.Entry(root, width=6, state='disabled')
-first_slice_entry.place(x=120, y=70)
+    first_slice_entry = tk.Entry(root, width=6, state='disabled')
+    first_slice_entry.place(x=120, y=70)
 
-second_slice_entry = tk.Entry(root, width=6, state='disabled')
-second_slice_entry.place(x=180, y=70)
+    second_slice_entry = tk.Entry(root, width=6, state='disabled')
+    second_slice_entry.place(x=180, y=70)
 
-fade_in_btn = tk.Button(root, borderwidth=0, text='Fade in', command=lambda: get_fade_in(), width=4, state='disabled')
-fade_in_btn.place(x=120, y=100)
+    fade_in_btn = tk.Button(root, borderwidth=0, text='Fade in', command=lambda: get_fade_in(), width=4,
+                            state='disabled')
+    fade_in_btn.place(x=120, y=100)
 
-fade_in_entry = tk.Entry(root, width=6, state='disabled')
-fade_in_entry.place(x=120, y=128)
+    fade_in_entry = tk.Entry(root, width=6, state='disabled')
+    fade_in_entry.place(x=120, y=128)
 
-fade_out_btn = tk.Button(root, borderwidth=0, text='Fade out', command=lambda: get_fade_out(), width=4, state='disabled')
-fade_out_btn.place(x=120, y=160)
+    fade_out_btn = tk.Button(root, borderwidth=0, text='Fade out', command=lambda: get_fade_out(), width=4,
+                             state='disabled')
+    fade_out_btn.place(x=120, y=160)
 
-fade_out_entry = tk.Entry(root, width=6, state='disabled')
-fade_out_entry.place(x=120, y=188)
+    fade_out_entry = tk.Entry(root, width=6, state='disabled')
+    fade_out_entry.place(x=120, y=188)
 
-repeat_btn = tk.Button(root, borderwidth=0, text='Repeat', command=lambda: get_repeat(), width=4, state='disabled')
-repeat_btn.place(x=120, y=220)
+    repeat_btn = tk.Button(root, borderwidth=0, text='Repeat', command=lambda: get_repeat(), width=4, state='disabled')
+    repeat_btn.place(x=120, y=220)
 
-repeat_entry = tk.Entry(root, width= 6, state='disabled')
-repeat_entry.place(x=120, y=248)
+    repeat_entry = tk.Entry(root, width=6, state='disabled')
+    repeat_entry.place(x=120, y=248)
 
-save_btn = tk.Button(root, borderwidth=0, text='Save', command=lambda: song.save(), width=4, state='disabled')
-save_btn.place(x=120,y=280)
-#time_label = tk.Label(root, borderwidth=2, text=f'Song duration: {song.get_duration()}')
-#time_label.place(x=40, y=190)
+    save_btn = tk.Button(root, borderwidth=0, text='Save', command=lambda: song.save(), width=4, state='disabled')
+    save_btn.place(x=120, y=280)
 
-root.mainloop()
+    root.mainloop()
